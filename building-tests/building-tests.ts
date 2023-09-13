@@ -1,17 +1,17 @@
-type Doc = {
-  name: string;
-  demand: number;
-  price: number;
-  producers: Array<unknown>;
-};
-
 type ProducerData = {
   cost: number;
   name: string;
   production: number;
 };
 
-class Producer {
+type Doc = {
+  name: string;
+  demand: number;
+  price: number;
+  producers: Array<ProducerData>;
+};
+
+export class Producer {
   private _province: Province;
   private _cost: number;
   private _name: string;
@@ -24,7 +24,7 @@ class Producer {
     this._production = data.production || 0;
   }
 
-  get name() {
+  get name(): string {
     return this._name;
   }
 
@@ -48,7 +48,7 @@ class Producer {
   }
 }
 
-class Province {
+export class Province {
   private _name: string;
   private _producers: Array<ProducerData>;
   private _totalProduction: number;
@@ -62,22 +62,24 @@ class Province {
     this._demand = doc.demand;
     this._price = doc.price;
 
-    this._producers.forEach((d) => this.addProducer(new Producer(this, d)));
+    doc.producers.forEach((d) => {
+      this.addProducer(new Producer(this, d));
+    });
   }
 
-  public get name(): string {
+  get name(): string {
     return this._name;
   }
 
-  public get producers(): unknown[] {
+  get producers(): Array<ProducerData> {
     return this._producers.slice();
   }
 
-  public get totalProduction(): number {
+  get totalProduction(): number {
     return this._totalProduction;
   }
 
-  public set totalProduction(arg: number) {
+  set totalProduction(arg: number) {
     this._totalProduction = arg;
   }
 
@@ -97,13 +99,44 @@ class Province {
     this._price = parseInt(arg);
   }
 
+  get shortfall(): number {
+    return this._demand - this.totalProduction;
+  }
+
+  get demandValue(): number {
+    return this.satisfiedDemand * this.price;
+  }
+
+  get satisfiedDemand(): number {
+    return Math.min(this._demand, this.totalProduction);
+  }
+
+  get profit(): number {
+    return this.demandValue - this.demandCost;
+  }
+
+  get demandCost(): number {
+    let remainingDemand = this.demand;
+    let result = 0;
+
+    this.producers
+      .sort((a, b) => a.cost - b.cost)
+      .forEach((p) => {
+        const contribution = Math.min(remainingDemand, p.production);
+        remainingDemand -= contribution;
+        result += contribution * p.cost;
+      });
+
+    return result;
+  }
+
   private addProducer(arg: Producer): void {
     this._producers.push(arg);
     this._totalProduction += arg.production;
   }
 }
 
-function sampleProvinceData() {
+export function sampleProvinceData(): Doc {
   return {
     name: "Asia",
     producers: [
