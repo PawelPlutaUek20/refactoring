@@ -1,13 +1,16 @@
 {
-  "devDependencies": {
-    "@types/jest": "^29.5.4",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.1.1",
-    "typescript": "^5.2.2"
-  },
+  "name": "refactoring",
+  "module": "index.ts",
+  "type": "module",
   "scripts": {
-    "test": "jest",
-    "the-starting-point": "node ./the-starting-point/main.js"
+    "the-starting-point": "bun ./the-starting-point/main.ts",
+    "building-tests": "bun test"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   },
   "dependencies": {
     "remeda": "^1.26.0"

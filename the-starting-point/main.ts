@@ -1,5 +1,5 @@
-import plays from "./plays.json";
-import invoices from "./invoices.json";
+import plays from "./plays";
+import invoices from "./invoices";
 
 import { statement } from "./the-starting-point";
 import { statement as statement2 } from "./refactoring";

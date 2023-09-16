@@ -1,4 +1,5 @@
 import { Province, sampleProvinceData } from "./building-tests";
+import { beforeEach, describe, expect, it } from "bun:test";
 
 describe("province", function () {
   let asia: Province;

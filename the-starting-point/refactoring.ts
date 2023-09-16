@@ -1,7 +1,7 @@
 import * as R from "remeda";
 
-import playsData from "./plays.json";
-import invoicesData from "./invoices.json";
+import playsData from "./plays";
+import invoicesData from "./invoices";
 
 type Invoice = (typeof invoicesData)[number];
 type Plays = typeof playsData;
